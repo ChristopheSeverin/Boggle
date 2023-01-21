@@ -78,7 +78,7 @@ let build_letter_to_positions () =
         i :: letter_to_positions.(Char.code c - Char.code 'A'))
     !grid
 
-let rec find_solutions paths w (Dictionary.Node (b, l)) =
+let rec solve_grid ?(paths = []) ?(w = "") (Dictionary.Node (b, l)) =
   if b then solutions := w :: !solutions;
   List.iter
     (fun (c, d) ->
@@ -102,7 +102,7 @@ let rec find_solutions paths w (Dictionary.Node (b, l)) =
             [] paths
       in
       if paths_wc <> [] then
-        find_solutions paths_wc (Printf.sprintf "%s%c" w c) d)
+        solve_grid ~paths:paths_wc ~w:(Printf.sprintf "%s%c" w c) d)
     l
 
 let print () =
@@ -116,7 +116,7 @@ let rec new_grid () =
   grid := String.init 16 (fun _ -> random_letter ());
   build_letter_to_positions ();
   solutions := [];
-  find_solutions [] "" ods;
+  solve_grid ods;
   if
     List.length !solutions < min_solutions_for_a_grid
     || max_solutions_for_a_grid < List.length !solutions
