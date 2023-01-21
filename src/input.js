@@ -22,6 +22,7 @@ socket.onmessage = function (event) {
 socket.onclose = function () {
   gameOn = false;
   erasePath();
+  refreshCellsClickableStatus();
   _status.textContent = "Vous êtes déconnecté(e). Veuillez rafraîchir la page.";
 };
 
