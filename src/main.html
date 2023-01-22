@@ -9,51 +9,55 @@
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
-    <div class="column">
-      <u>Solutions<span id="score"></span> :</u>
-      <ul id="solutions"></ul>
-    </div>
-    <div class="column">
-      <div id="timer">3:00</div>
-      <table id="grid">
-        <tr>
-          <td id="0"></td>
-          <td id="1"></td>
-          <td id="2"></td>
-          <td id="3"></td>
-        </tr>
-        <tr>
-          <td id="4"></td>
-          <td id="5"></td>
-          <td id="6"></td>
-          <td id="7"></td>
-        </tr>
-        <tr>
-          <td id="8"></td>
-          <td id="9"></td>
-          <td id="10"></td>
-          <td id="11"></td>
-        </tr>
-        <tr>
-          <td id="12"></td>
-          <td id="13"></td>
-          <td id="14"></td>
-          <td id="15"></td>
-        </tr>
-      </table>
-      <div id="input">
-        <span id="buttons">
-          <button id="erase">&#x2715;</button
-          ><button id="enter">&#x2713;</button></span
-        >&nbsp;<span id="word"></span>
+    <div id="container">
+      <div class="column">
+        <u>Solutions<span id="score"></span> :</u>
+        <ul id="solutions"></ul>
       </div>
-      <div id="status">Chargement en cours...</div>
+      <div class="column">
+        <div id="head">
+          <div id="yourRank">Rang :<span id="insertRank"></span>
+          </div><div id="timer">3:00</div>
+        </div>
+        <table id="grid">
+          <tr>
+            <td id="0"></td>
+            <td id="1"></td>
+            <td id="2"></td>
+            <td id="3"></td>
+          </tr>
+          <tr>
+            <td id="4"></td>
+            <td id="5"></td>
+            <td id="6"></td>
+            <td id="7"></td>
+          </tr>
+          <tr>
+            <td id="8"></td>
+            <td id="9"></td>
+            <td id="10"></td>
+            <td id="11"></td>
+          </tr>
+          <tr>
+            <td id="12"></td>
+            <td id="13"></td>
+            <td id="14"></td>
+            <td id="15"></td>
+          </tr>
+        </table>
+        <div id="input">
+          <span id="buttons">
+            <button id="erase">&#x2715;</button
+            ><button id="enter">&#x2713;</button></span
+          >&nbsp;<span id="word"></span>
+        </div>
+        <div id="status">Chargement en cours...</div>
+      </div>
+      <div id="c3" class="column">
+        <u>Classement :</u>
+        <ol id="rank"></ol>
+      </div>
     </div>
-    <div class="column">
-      <u>Classement :<span id="yourRank"></span></u>
-      <ol id="rank"></ol>
-    </div>
-
     <script src="/static/script.js"></script>
   </body>
 </html>

@@ -84,6 +84,8 @@ function printRank(rankWord) {
         _span.id = "you";
         _span.innerText = "vous";
         _li.appendChild(_span);
+
+        _insertRank.textContent = " " + counter.toString();
       } else {
         _li.innerHTML += "j" + ids[i];
       }
@@ -99,4 +101,5 @@ function printRank(rankWord) {
     _rank.appendChild(_li);
     counter += ids.length;
   });
+  _insertRank.textContent += "/" + (counter - 1).toString();
 }

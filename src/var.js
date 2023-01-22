@@ -20,6 +20,7 @@ const _status = document.getElementById("status");
 
 const _timer = document.getElementById("timer");
 const _score = document.getElementById("score");
+const _insertRank = document.getElementById("insertRank");
 
 /* Boggle */
 let gameOn = false; // is game on ?

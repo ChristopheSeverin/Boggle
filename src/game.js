@@ -20,6 +20,7 @@ function newGame(w) {
   score = 0;
   _score.textContent = "";
   _rank.textContent = "";
+  _insertRank.textContent = "";
 
   newGrid(w);
   startGame();

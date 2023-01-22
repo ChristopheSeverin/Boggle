@@ -33,38 +33,6 @@ let neighbour =
     [ 10; 11; 14 ];
   |]
 
-(* Random letter in french *)
-let random_letter =
-  Random.self_init ();
-  fun () ->
-    let n = 1 + Random.int 2824 in
-    if n <= 273 then 'A'
-    else if n <= 314 then 'B'
-    else if n <= 412 then 'C'
-    else if n <= 478 then 'D'
-    else if n <= 892 then 'E'
-    else if n <= 928 then 'F'
-    else if n <= 974 then 'G'
-    else if n <= 1010 then 'H'
-    else if n <= 1276 then 'I'
-    else if n <= 1281 then 'J'
-    else if n <= 1284 then 'K'
-    else if n <= 1398 then 'L'
-    else if n <= 1469 then 'M'
-    else if n <= 1673 then 'N'
-    else if n <= 1844 then 'O'
-    else if n <= 1911 then 'P'
-    else if n <= 1926 then 'Q'
-    else if n <= 2165 then 'R'
-    else if n <= 2450 then 'S'
-    else if n <= 2644 then 'T'
-    else if n <= 2748 then 'U'
-    else if n <= 2774 then 'V'
-    else if n <= 2775 then 'W'
-    else if n <= 2783 then 'X'
-    else if n <= 2795 then 'Y'
-    else 'Z'
-
 let compute_max_grid_points () =
   max_grid_points :=
     List.fold_left (fun sum w -> sum + points.(String.length w)) 0 !solutions
@@ -113,7 +81,7 @@ let print () =
 
 (* New grid *)
 let rec new_grid () =
-  grid := String.init 16 (fun _ -> random_letter ());
+  grid := String.init 16 (fun _ -> Dictionary.random_letter ());
   build_letter_to_positions ();
   solutions := [];
   solve_grid ods;
