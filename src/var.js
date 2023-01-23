@@ -1,7 +1,7 @@
 /* Same on server side */
 // word length -> point(s)
 const points = [0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-const game_duration = 50; // in seconds
+const game_duration = 60; // in seconds
 const solutions_duration = 40; // in seconds
 let timer = 180; // in seconds
 
@@ -20,7 +20,7 @@ const _status = document.getElementById("status");
 
 const _timer = document.getElementById("timer");
 const _score = document.getElementById("score");
-const _insertRank = document.getElementById("insertRank");
+const _shortRank = document.getElementById("shortRank");
 
 /* Boggle */
 let gameOn = false; // is game on ?

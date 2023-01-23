@@ -1,5 +1,5 @@
 let game_on = ref false
-let game_duration = 50.0 (* in seconds *)
+let game_duration = 60.0 (* in seconds *)
 let solutions_duration = 40.0 (* in seconds *)
 let time = ref (Unix.time ())
 let max_number_of_clients = 5
@@ -28,19 +28,28 @@ let remove_client client_id client =
   Dream.close_websocket client
 
 let disconnect_inactive_clients () =
-  Hashtbl.iter
-    (fun i (s, _, _, n) ->
-      if n >= max_number_of_games_with_score_0 then ignore (remove_client i s))
-    clients
+  let clients_to_be_removed =
+    Hashtbl.fold
+      (fun i (s, _, _, n) l ->
+        if n >= max_number_of_games_with_score_0 then (i, s) :: l else l)
+      clients []
+  in
+  List.map (fun (i, s) -> remove_client i s) clients_to_be_removed |> Lwt.join
 
 let erase_scores () =
   Hashtbl.filter_map_inplace
     (fun _ (s, _, pt, n) -> Some (s, [], 0, if pt = 0 then n + 1 else 0))
     clients
 
-(* Send data to clients *)
+let rank p =
+  Hashtbl.fold
+    (fun _ (_, _, pt, _) res -> if pt > p then res + 1 else res)
+    clients 1
+
+(* Send data to clients when game is off *)
 let send_to_all_clients message =
-  Hashtbl.iter (fun _ (s, _, _, _) -> ignore (Dream.send s message)) clients
+  Hashtbl.fold (fun _ (s, _, _, _) l -> Dream.send s message :: l) clients []
+  |> Lwt.join
 
 let send_grid () = send_to_all_clients ("g" ^ !Boggle.grid)
 
@@ -59,19 +68,30 @@ let send_rank () =
       (fun client_id (_, _, p, _) l -> insert_rank (p, client_id) l)
       clients []
   in
-  let rank =
+  let rank_word =
     List.fold_left
       (fun s (p, sp) ->
         if s = "" then Printf.sprintf "r%d:%s" p sp
         else s ^ Printf.sprintf " %d:%s" p sp)
       "" rank_list
   in
-  send_to_all_clients rank
+  send_to_all_clients rank_word
 
 let send_solutions () =
   let solutions = String.concat " " !Boggle.solutions in
   let message = Printf.sprintf "s%d " !Boggle.max_grid_points ^ solutions in
   send_to_all_clients message
+
+let send_game_status client_id client =
+  (* Send game status to the new client *)
+  if !game_on then
+    Dream.send client
+      (Printf.sprintf "n%d 1 %s %.0f" client_id !Boggle.grid
+         (game_duration -. Unix.time () +. !time))
+  else
+    Dream.send client
+      (Printf.sprintf "n%d 0 %s %.0f" client_id !Boggle.grid
+         (solutions_duration -. Unix.time () +. !time))
 
 (* Check if the data send by user is a credible word *)
 let is_a_credible_word w =
@@ -80,19 +100,6 @@ let is_a_credible_word w =
       a && Char.code 'A' <= Char.code c && Char.code c <= Char.code 'Z')
     (3 <= String.length w && String.length w <= 16)
     w
-
-let send_game_status client_id client =
-  (* Send game status to the new client *)
-  if !game_on then
-    ignore
-      (Dream.send client
-         (Printf.sprintf "n%d 1 %s %.0f" client_id !Boggle.grid
-            (game_duration -. Unix.time () +. !time)))
-  else
-    ignore
-      (Dream.send client
-         (Printf.sprintf "n%d 0 %s %.0f" client_id !Boggle.grid
-            (solutions_duration -. Unix.time () +. !time)))
 
 let handle_client client =
   let client_id = get_id client in
@@ -120,32 +127,33 @@ let handle_client client =
     | _ (* Disconnected client or corrupted data *) ->
         remove_client client_id client
   in
-  if client_id > 0 then (
-    send_game_status client_id client;
-    handle_socket ())
+  if client_id > 0 then
+    let%lwt () = send_game_status client_id client in
+    handle_socket ()
   else Dream.close_websocket client
 
 let rec games () =
   (* Create a game *)
   Boggle.new_grid ();
   erase_scores ();
-  disconnect_inactive_clients ();
+  let%lwt () = disconnect_inactive_clients () in
   time := Unix.time ();
   game_on := true;
-  send_grid ();
+  let%lwt () = send_grid () in
   (* Game start *)
   let%lwt () = Lwt_unix.sleep game_duration in
   (* End of game *)
-  time := Unix.time ();
   game_on := false;
-  send_solutions ();
-  send_rank ();
+  time := Unix.time ();
+  let%lwt () = send_solutions () in
+  let%lwt () = send_rank () in
   (* Show solutions and ranking *)
   let%lwt () = Lwt_unix.sleep solutions_duration in
   games ()
 
 let () =
-  Lwt.async (fun () -> games ());
+  Dream.log "Server start";
+  Lwt.async games;
   Dream.run @@ Dream.logger
   @@ Dream.router
        [

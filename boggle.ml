@@ -74,7 +74,7 @@ let rec solve_grid ?(paths = []) ?(w = "") (Dictionary.Node (b, l)) =
     l
 
 let print () =
-  Printf.printf "Grid : %s\n" !grid;
+  Dream.log "Grid : %s" !grid;
   Printf.printf "Solution(s) :\n";
   List.iter (Printf.printf "%s\n") !solutions;
   flush stdout
@@ -88,7 +88,9 @@ let rec new_grid () =
   if
     List.length !solutions < min_solutions_for_a_grid
     || max_solutions_for_a_grid < List.length !solutions
-  then new_grid ()
+  then (
+    Dream.log "REJECTED Grid : %s" !grid;
+    new_grid ())
   else (
     compute_max_grid_points ();
     print ())

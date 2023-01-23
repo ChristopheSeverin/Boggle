@@ -46,7 +46,7 @@ ol {
   align-items: center;
 }
 
-#yourRank {
+#shortRank {
   font-size: large;
   visibility: hidden;
   align-items: center;
@@ -134,7 +134,7 @@ button {
   #c3 {
     display: none;
   }
-  #yourRank {
+  #shortRank {
     visibility: visible;
   }
 
@@ -144,5 +144,3 @@ button {
     }
   }
 }
-
-
