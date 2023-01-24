@@ -46,42 +46,6 @@ let rank p =
     (fun _ (_, _, pt, _) res -> if pt > p then res + 1 else res)
     clients 1
 
-(* Send data to clients when game is off *)
-let send_to_all_clients message =
-  Hashtbl.fold (fun _ (s, _, _, _) l -> Dream.send s message :: l) clients []
-  |> Lwt.join
-
-let send_grid () = send_to_all_clients ("g" ^ !Boggle.grid)
-
-let send_rank () =
-  let rec insert_rank (p, client_id) l_rank =
-    let client_id_string = Printf.sprintf "%d" client_id in
-    match l_rank with
-    | [] -> [ (p, client_id_string) ]
-    | (p1, s) :: l when p = p1 -> (p1, client_id_string ^ "," ^ s) :: l
-    | (p1, s) :: l when p < p1 -> (p1, s) :: insert_rank (p, client_id) l
-    (* p > p1 *)
-    | _ -> (p, client_id_string) :: l_rank
-  in
-  let rank_list =
-    Hashtbl.fold
-      (fun client_id (_, _, p, _) l -> insert_rank (p, client_id) l)
-      clients []
-  in
-  let rank_word =
-    List.fold_left
-      (fun s (p, sp) ->
-        if s = "" then Printf.sprintf "r%d:%s" p sp
-        else s ^ Printf.sprintf " %d:%s" p sp)
-      "" rank_list
-  in
-  send_to_all_clients rank_word
-
-let send_solutions () =
-  let solutions = String.concat " " !Boggle.solutions in
-  let message = Printf.sprintf "s%d " !Boggle.max_grid_points ^ solutions in
-  send_to_all_clients message
-
 let send_game_status client_id client =
   (* Send game status to the new client *)
   if !game_on then
@@ -139,14 +103,14 @@ let rec games () =
   let%lwt () = disconnect_inactive_clients () in
   time := Unix.time ();
   game_on := true;
-  let%lwt () = send_grid () in
+  let%lwt () = Send.to_all ("g" ^ !Boggle.grid) clients in
   (* Game start *)
   let%lwt () = Lwt_unix.sleep game_duration in
   (* End of game *)
   game_on := false;
   time := Unix.time ();
-  let%lwt () = send_solutions () in
-  let%lwt () = send_rank () in
+  let%lwt () = Send.solutions clients in
+  let%lwt () = Send.rank clients in
   (* Show solutions and ranking *)
   let%lwt () = Lwt_unix.sleep solutions_duration in
   games ()
@@ -154,7 +118,8 @@ let rec games () =
 let () =
   Dream.log "Server start";
   Lwt.async games;
-  Dream.run @@ Dream.logger
+  Dream.run ~interface:"0.0.0.0" ~port:8080
+  @@ Dream.logger
   @@ Dream.router
        [
          Dream.get "/" (Dream.from_filesystem "static" "main.html");
