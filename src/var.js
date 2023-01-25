@@ -1,8 +1,8 @@
 /* Same on server side */
 // word length -> point(s)
-const points = [0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-const game_duration = 60; // in seconds
-const solutions_duration = 40; // in seconds
+const points = [0,0,0,1,1,2,4,8,16,32,64,128,256,512,1024,2048,4096];
+const game_duration = 180; // in seconds
+const solutions_duration = 35; // in seconds
 let timer = 180; // in seconds
 
 /* Client id, given by the server */
