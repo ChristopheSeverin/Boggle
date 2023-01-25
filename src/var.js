@@ -21,6 +21,7 @@ const _status = document.getElementById("status");
 const _timer = document.getElementById("timer");
 const _score = document.getElementById("score");
 const _shortRank = document.getElementById("shortRank");
+const _rankingHeader = document.getElementById("rankingHeader");
 
 /* Boggle */
 let gameOn = false; // is game on ?

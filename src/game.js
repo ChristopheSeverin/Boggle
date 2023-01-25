@@ -21,6 +21,7 @@ function newGame(w) {
   _score.textContent = "";
   _rank.textContent = "";
   _shortRank.textContent = "";
+  _rankingHeader.classList.add("invisible");
 
   newGrid(w);
   startGame();

@@ -10,6 +10,24 @@ setInterval(() => {
   }
 }, 1000);
 
+function refreshButtonsOpacity() {
+  if (gameOn) {
+    if (word.length >= 3) {
+      _buttonValidate.classList.add("valid");
+    } else {
+      _buttonValidate.classList.remove("valid");
+    }
+    if (word.length >= 1) {
+      _buttonErase.classList.add("valid");
+    } else {
+      _buttonErase.classList.remove("valid");
+    }
+  } else {
+    _buttonValidate.classList.remove("valid");
+    _buttonErase.classList.remove("valid");
+  }
+}
+
 // 0 : w not accepted
 // 1 : w accepted
 // 2 : w already found
@@ -66,6 +84,7 @@ function printScore(max) {
 }
 
 function printRank(rankWord) {
+  _rankingHeader.classList.remove("invisible");
   let counter = 1;
   _rank.textContent = "";
   const rank = rankWord.split(" ");

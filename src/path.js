@@ -6,6 +6,7 @@ function addToPath(i) {
   word += grid[i];
   printWord();
   refreshCellsClickableStatus();
+  refreshButtonsOpacity();
 }
 
 // Remove last cell from user's path
@@ -15,11 +16,18 @@ function popPath() {
   word = word.slice(0, word.length - 1);
   printWord();
   refreshCellsClickableStatus();
+  refreshButtonsOpacity();
 }
 
 function erasePath() {
-  while (userPath.length > 0) {
-    popPath();
+  if (userPath.length > 0) {
+    userPath.forEach((i) => {
+      document.getElementById(i).classList.remove("selected");
+    });
+    word = "";
+    printWord();
+    refreshCellsClickableStatus();
+    refreshButtonsOpacity();
   }
 }
 

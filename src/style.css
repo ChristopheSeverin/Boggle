@@ -52,6 +52,10 @@ ol {
   align-items: center;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 #you {
   background-color: rgb(160, 255, 160);
 }
@@ -116,6 +120,11 @@ button {
   font-size: large;
   text-align: center;
   border-radius: 15%;
+  opacity: 0.5;
+}
+
+.valid {
+  opacity: 1;
 }
 
 #erase {
