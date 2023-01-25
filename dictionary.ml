@@ -1,4 +1,4 @@
-let dictionary_file = "dictionaries/ODS8.txt"
+let dictionary_file = "dictionaries/fr.txt"
 
 let letter_frequency file_name =
   let letter_occurrence = Array.make 26 0 in
