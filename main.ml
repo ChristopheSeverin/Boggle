@@ -1,8 +1,8 @@
 let game_on = ref false
-let game_duration = 60.0 (* in seconds *)
-let solutions_duration = 40.0 (* in seconds *)
+let game_duration = 180.0 (* in seconds *)
+let solutions_duration = 35.0 (* in seconds *)
 let time = ref (Unix.time ())
-let max_number_of_clients = 5
+let max_number_of_clients = 100
 let max_number_of_games_with_score_0 = 3 (* Client disconnected after that *)
 
 (* Clients' data : id -> (socket, words found, score, nb of consecutives games with score 0) *)

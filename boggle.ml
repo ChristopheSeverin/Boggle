@@ -1,7 +1,9 @@
 let grid = ref ""
 let letter_to_positions = Array.init 26 (fun _ -> [])
 let solutions = ref []
-let points = [| 0; 0; 0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14 |]
+
+let points =
+  [| 0; 0; 0; 1; 1; 2; 4; 8; 16; 32; 64; 128; 256; 512; 1024; 2048; 4096 |]
 
 let min_solutions_for_a_grid = 30
 and max_solutions_for_a_grid = 400
