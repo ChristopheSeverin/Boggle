@@ -24,6 +24,7 @@ function erasePath() {
     userPath.forEach((i) => {
       document.getElementById(i).classList.remove("selected");
     });
+    userPath = [];
     word = "";
     printWord();
     refreshCellsClickableStatus();
