@@ -15,7 +15,7 @@ let letter_frequency file_name =
       done
     with _ -> close_in file
   in
-  let total = Array.fold_left (fun s o -> s + o) 0 letter_occurrence in
+  let total = Array.fold_left (+) 0 letter_occurrence in
   Array.init 26 (fun i ->
       float_of_int letter_occurrence.(i) /. float_of_int total)
 
