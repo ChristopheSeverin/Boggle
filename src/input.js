@@ -35,7 +35,7 @@ window.addEventListener("keydown", (e) => {
       addLetter(e.key.toUpperCase());
     } else if (word.length >= 1 && e.key == "Backspace") {
       popPath();
-    } else if (e.key == "Delete") {
+    } else if (word.length >= 1 && e.key == "Delete") {
       erasePath();
     } else if (e.key == "Enter") {
       validatePath();

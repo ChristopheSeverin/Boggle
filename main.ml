@@ -65,16 +65,19 @@ let is_a_credible_word w =
     (3 <= String.length w && String.length w <= 16)
     w
 
+let secured_receive client =
+  Lwt.catch (fun () -> Dream.receive client) (fun _ -> Lwt.return None)
+
 let handle_client client =
   let client_id = get_id client in
   (* Handle its websockets *)
   let rec handle_socket () =
-    match%lwt Dream.receive client with
+    match%lwt secured_receive client with
     | Some word when is_a_credible_word word ->
         if !game_on then
           let s, client_sol, p, nb0 = Hashtbl.find clients client_id in
           if List.mem word client_sol then
-            let%lwt () = Dream.send client ("2" ^ word) in
+            let%lwt () = Send.secured clients client_id client ("2" ^ word) in
             handle_socket ()
           else if List.mem word !Boggle.solutions then (
             Hashtbl.replace clients client_id
@@ -82,10 +85,10 @@ let handle_client client =
                 word :: client_sol,
                 p + Boggle.points.(String.length word),
                 nb0 );
-            let%lwt () = Dream.send client ("1" ^ word) in
+            let%lwt () = Send.secured clients client_id client ("1" ^ word) in
             handle_socket ())
           else
-            let%lwt () = Dream.send client ("0" ^ word) in
+            let%lwt () = Send.secured clients client_id client ("0" ^ word) in
             handle_socket ()
         else handle_socket ()
     | _ (* Disconnected client or corrupted data *) ->
@@ -116,9 +119,8 @@ let rec games () =
   games ()
 
 let () =
-  Dream.log "Server start";
   Lwt.async games;
-  Dream.run ~interface:"0.0.0.0" ~port:8080
+  Dream.run ~interface:"0.0.0.0"  ~port:8080
   @@ Dream.logger
   @@ Dream.router
        [

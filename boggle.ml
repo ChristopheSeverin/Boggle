@@ -78,7 +78,8 @@ let rec solve_grid ?(paths = []) ?(w = "") (Dictionary.Node (b, l)) =
 let print () =
   Dream.log "Grid : %s" !grid;
   Printf.printf "Solution(s) :\n";
-  List.iter (Printf.printf "%s\n") !solutions;
+  List.iter (Printf.printf "%s ") !solutions;
+  Printf.printf "\n";
   flush stdout
 
 (* New grid *)

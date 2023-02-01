@@ -1,5 +1,15 @@
+let secured clients id s m =
+  Lwt.catch
+    (fun () -> Dream.send s m)
+    (fun _ ->
+      Hashtbl.remove clients id;
+      Dream.close_websocket s)
+
 let to_all message clients =
-  Hashtbl.fold (fun _ (s, _, _, _) l -> Dream.send s message :: l) clients []
+  let clients_list =
+    Hashtbl.fold (fun id (s, _, _, _) l -> (id, s) :: l) clients []
+  in
+  List.map (fun (id, s) -> secured clients id s message) clients_list
   |> Lwt.join
 
 let rank clients =
