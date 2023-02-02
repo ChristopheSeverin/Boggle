@@ -6,9 +6,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Règles du Boggle</title>
     <link rel="icon" href="data:," />
+    <style>
+      table {
+        text-align: center;
+        border-spacing: 5px;
+      }
+    </style>
   </head>
 
   <body>
-    Règles du jeu
+    <p>
+      Les joueurs ont 3 minutes pour trouver un maximum de mots d'au moins 3
+      lettres dans la grille. Plus un mot est long, plus il apporte de points :
+    </p>
+    <table>
+      <tr>
+        <th>Nombre de lettres</th>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+        <td>10</td>
+        <td>11</td>
+        <td>12</td>
+        <td>13</td>
+        <td>14</td>
+        <td>15</td>
+        <td>16</td>
+      </tr>
+      <tr>
+        <th>Nombre de points</th>
+        <td>1</td>
+        <td>1</td>
+        <td>2</td>
+        <td>4</td>
+        <td>8</td>
+        <td>16</td>
+        <td>32</td>
+        <td>64</td>
+        <td>128</td>
+        <td>256</td>
+        <td>512</td>
+        <td>1024</td>
+        <td>2048</td>
+        <td>4096</td>
+      </tr>
+    </table>
+    <p>
+      Pour compter, un mot doit appartenir à la langue française (les accents
+      sont ignorés) et doit être construit de case en case voisines
+      (verticalement, horizontalement et diagonalement). Une case ne peut pas
+      être réutilisée pour former un même mot. On peut, par exemple, réaliser le
+      mot <em>aînesse</em> dans la grille :
+    </p>
+    <div style="text-align: center">
+      <img src="../Images/Ainesse.png" alt="Ainesse" width="200" height="200" />
+    </div>
+    <p>
+      Vous pouvez saisir un mot au clavier (il s'affichera, s'il est réalisable)
+      ou en cliquant sur les cases.
+    </p>
   </body>
 </html>
