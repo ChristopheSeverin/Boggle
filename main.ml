@@ -127,5 +127,6 @@ let () =
          Dream.get "/" (Dream.from_filesystem "static" "main.html");
          Dream.get "/regles" (Dream.from_filesystem "static" "regles.html");
          Dream.get "/static/**" (Dream.static "./static");
+         Dream.get "/Images/**" (Dream.static "./Images");
          Dream.get "/websocket" (fun _ -> Dream.websocket handle_client);
        ]

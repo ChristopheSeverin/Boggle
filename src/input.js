@@ -57,6 +57,10 @@ _grid.addEventListener("click", (e) => {
       addToPath(id);
     } else if (userPath[userPath.length - 1] == id) {
       popPath();
+    } else {
+      _status.textContent =
+        "Les lettres saisies doivent être consécutives dans la grille ";
+      printSeeRules();
     }
   }
 });
