@@ -1,6 +1,17 @@
 # Boggle multijoueurs
 
+Jeu du [Boggle](https://fr.wikipedia.org/wiki/Boggle) où les participants s'affrontent sur une même grille. Une version tourne sur [boggle.duplicate.games](https://boggle.duplicate.games).
+
 ## Installation
+
+La partie serveur est programmée en [OCaml](https://ocaml.org/) grâce à l'infrastructure [Dream](https://aantron.github.io/dream/).
+Nous recommandons d'installer ce dernier en passant par le gestionnaire de paquet [opam](https://opam.ocaml.org/) :
+
+```
+opam install dream
+```
+
+Placez-vous ensuite à la racine du projet et exécutez la commande
 
 ```
 npm install esy && npx esy
@@ -19,7 +30,3 @@ Celui-ci compresse (en utilisant [minify](https://github.com/matthiasmullie/mini
 ```
 npx esy start
 ```
-
-## Langages
-
-La partie serveur est programmée en [OCaml](https://ocaml.org/) grâce à l'infrastructure [Dream](https://aantron.github.io/dream/).
