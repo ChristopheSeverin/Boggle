@@ -1,6 +1,6 @@
 # Boggle multijoueurs
 
-Jeu du [Boggle](https://fr.wikipedia.org/wiki/Boggle) où les participants s'affrontent sur une même grille. Une version tourne sur [boggle.duplicate.games](https://boggle.duplicate.games).
+Jeu du [Boggle](https://fr.wikipedia.org/wiki/Boggle) où les participants s'affrontent sur une même grille. Une version tourne sur [boggle.duplicate.games](http://boggle.duplicate.games).
 
 ## Installation
 
