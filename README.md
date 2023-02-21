@@ -17,6 +17,10 @@ Placez-vous ensuite à la racine du projet et exécutez la commande
 npm install esy && npx esy
 ```
 
+## Dictionnaire
+
+Le jeu nécessite un dictionnaire (une liste de mots) nommé par defaut _fr.txt_ et placé dans le répertoire _dictionaries_. Nous recommandons l'usage de l'[officiel du Scrabble](https://www.fisf.net/officiel-du-scrabble/presentation.html).
+
 ## Lancement
 
 Vous pouvez lancer le serveur grâce au script _start.sh_ (dont il vous faudra probablement autoriser l'exécution) :
