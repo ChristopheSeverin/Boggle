@@ -1,0 +1,3 @@
+(library
+ (name send)
+ (libraries dream lwt client))

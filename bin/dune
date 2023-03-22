@@ -1,0 +1,8 @@
+(executable
+ (public_name Boggle)
+ (name main)
+ (libraries client send game)
+ (modules main parameters)
+ (preprocess (pps lwt_ppx)))
+
+

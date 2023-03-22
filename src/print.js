@@ -80,6 +80,10 @@ function printScore(max) {
   if (score > 1) {
     _score.textContent += "s";
   }
+  if (max > 0) {
+    _score.textContent +=
+      ", " + Number.parseFloat((score / max) * 100).toFixed(1) + "%";
+  }
   _score.textContent += ")";
 }
 

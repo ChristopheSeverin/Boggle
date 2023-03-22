@@ -1,0 +1,4 @@
+.ocamlformat
+_build/
+static/
+dictionaries/
