@@ -22,4 +22,4 @@ val max_number_of_clients : int
 (** Maximal number of clients allowed to play simultaneously. *)
 
 val max_number_of_games_with_score_0 : int 
-(** Client are disconnected after [max_number_of_games_with_score_0] game with 0 points. *)
+(** A client is expelled after [max_number_of_games_with_score_0] game(s) with 0 point. *)
