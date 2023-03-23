@@ -29,17 +29,19 @@ function addSolution(w) {
 function outputSolutions(sol) {
   cleanOutputSolutions();
   sol.forEach((w) => {
-    const _span = document.createElement("span");
-    if (solutions.includes(w)) {
-      _span.classList.add("found");
+    if (w != "") {
+      const _span = document.createElement("span");
+      if (solutions.includes(w)) {
+        _span.classList.add("found");
+      }
+      const _li = document.getElementById("s" + w.length.toString());
+      if (_li.textContent != "") {
+        _li.innerHTML += " ";
+        _span.textContent = w.toLowerCase();
+      } else {
+        _span.textContent = w[0] + w.substring(1).toLowerCase();
+      }
+      _li.appendChild(_span);
     }
-    const _li = document.getElementById("s" + w.length.toString());
-    if (_li.textContent != "") {
-      _li.innerHTML += " ";
-      _span.textContent = w.toLowerCase();
-    } else {
-      _span.textContent = w[0] + w.substring(1).toLowerCase();
-    }
-    _li.appendChild(_span);
   });
 }
