@@ -1,9 +1,13 @@
 (* Dictionary : Multiway Tree *)
 type dictionary = Node of string * (char * dictionary) list
 
-let rec add_aux i unicode_word word (Node (b, l) as dic) =
-  if i = String.length word then Node (unicode_word, l)
-  else Node (b, insert i unicode_word word l dic)
+let rec add_aux i unicode_word word (Node (unicode_w, l) as dic) =
+  if i = String.length word then
+    Node
+      ( (if String.uppercase_ascii unicode_w = word then unicode_w
+         else unicode_word),
+        l )
+  else Node (unicode_w, insert i unicode_word word l dic)
 
 and insert i unicode_word word list dic =
   let wi = word.[i] in

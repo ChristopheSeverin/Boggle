@@ -13,6 +13,7 @@ depends: [
   "dream"
   "lwt"
   "dune" {>= "3.7"}
+  "unidecode"
   "odoc" {with-doc}
 ]
 build: [

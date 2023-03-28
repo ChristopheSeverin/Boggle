@@ -19,4 +19,4 @@
  (name boggle)
  (synopsis "Online duplicate Boggle")
  (description "All players compete on the same online Boggle grid")
- (depends ocaml dream lwt dune))
+ (depends ocaml dream lwt dune unidecode))
