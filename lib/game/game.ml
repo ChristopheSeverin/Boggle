@@ -22,15 +22,19 @@ let neighbour =
     [ 10; 11; 14 ];
   |]
 
+let solutions = Hashtbl.create 400
+
 let positions c grid =
   snd
     (String.fold_left
        (fun (i, res) grid_c -> (i + 1, if grid_c = c then i :: res else res))
        (0, []) grid)
 
-let rec solve_grid ?(paths = []) ?(w = "") (Dictionary.Node (b, l)) grid =
-  List.fold_left
-    (fun sol (c, d) ->
+let rec solve_grid ?(paths = []) ?(w = "") (Dictionary.Node (unicode_word, l))
+    grid =
+  if unicode_word <> "" then Hashtbl.add solutions w unicode_word;
+  List.iter
+    (fun (c, d) ->
       let paths_wc =
         let positions_of_c = positions c grid in
         if w = "" then List.map (fun i -> [ i ]) positions_of_c
@@ -48,28 +52,30 @@ let rec solve_grid ?(paths = []) ?(w = "") (Dictionary.Node (b, l)) grid =
             (fun accu path -> accu @ paths_from_path_for_wc path)
             [] paths
       in
-      if paths_wc = [] then sol
-      else
-        sol @ solve_grid ~paths:paths_wc ~w:(Printf.sprintf "%s%c" w c) d grid)
-    (if b then [ w ] else [])
+      if paths_wc <> [] then
+        solve_grid ~paths:paths_wc ~w:(Printf.sprintf "%s%c" w c) d grid)
     l
 
-let solutions d g = solve_grid d g
-
-let create dictionary min_solutions_for_a_grid max_solutions_for_a_grid =
-  let d = Dictionary.load dictionary
-  and random_letter = Letter.random_letter dictionary in
+let create =
+  let d = Dictionary.load Parameters.dictionary
+  and random_letter = Letter.random_letter Parameters.dictionary in
   let rec produce_grid_and_sol () =
     let grid = String.init 16 (fun _ -> random_letter ()) in
-    let sol = solutions d grid in
+    Hashtbl.clear solutions;
+    solve_grid d grid;
     if
-      List.length sol < min_solutions_for_a_grid
-      || max_solutions_for_a_grid < List.length sol
+      Hashtbl.length solutions < Parameters.min_number_of_solutions_for_a_grid
+      || Parameters.max_number_of_solutions_for_a_grid
+         < Hashtbl.length solutions
     then (
       Dream.log "Rejected grid : %s" grid;
       produce_grid_and_sol ())
     else (
       Dream.log "Grid : %s" grid;
-      (grid, sol))
+      (*Print solutions :
+        Hashtbl.iter (fun _ -> Printf.printf "%s ") solutions;
+        Printf.printf "\n";
+        flush stdout;*)
+      grid)
   in
   produce_grid_and_sol

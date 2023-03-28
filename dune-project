@@ -1,6 +1,6 @@
 (lang dune 3.7)
 
-(name Boggle)
+(name boggle)
 
 (generate_opam_files true)
 
@@ -16,7 +16,7 @@
 (documentation https://github.com/ChristopheSeverin/Boggle/blob/master/README.md)
 
 (package
- (name Boggle)
+ (name boggle)
  (synopsis "Online duplicate Boggle")
  (description "All players compete on the same online Boggle grid")
  (depends ocaml dream lwt dune))

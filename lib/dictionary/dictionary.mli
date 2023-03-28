@@ -1,5 +1,6 @@
-type dictionary = Node of bool * (char * dictionary) list
-(** Dictionary implemented as a multiway tree. *)
+type dictionary =
+  | Node of string * (char * dictionary) list
+      (** Dictionary implemented as a multiway tree. *)
 
 val add : string -> dictionary -> dictionary
 (** [add w d] returns [d] where [w] is added. *)

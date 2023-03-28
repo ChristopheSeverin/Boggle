@@ -1,2 +1,3 @@
 (library
- (name letter))
+ (name letter)
+ (libraries parameters))

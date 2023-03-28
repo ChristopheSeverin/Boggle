@@ -1,15 +1,9 @@
 let secured id s m =
-  Lwt.catch
-    (fun () -> Dream.send s m)
-    (fun _ ->
-      Hashtbl.remove Client.clients id;
-      Dream.close_websocket s)
+  Lwt.catch (fun () -> Dream.send s m) (fun _ -> Client.remove id s)
 
 let to_all message =
-  let clients_list =
-    Hashtbl.fold (fun id (s, _, _, _) l -> (id, s) :: l) Client.clients []
-  in
-  List.map (fun (id, s) -> secured id s message) clients_list |> Lwt.join
+  List.map (fun (id, (s, _, _, _)) -> secured id s message) (Client.list ())
+  |> Lwt.join
 
 let rank () =
   let rec insert_rank (p, client_id) l_rank =
@@ -22,9 +16,9 @@ let rank () =
     | _ -> (p, client_id_string) :: l_rank
   in
   let rank_list =
-    Hashtbl.fold
-      (fun client_id (_, _, p, _) l -> insert_rank (p, client_id) l)
-      Client.clients []
+    List.fold_left
+      (fun l (client_id, (_, _, p, _)) -> insert_rank (p, client_id) l)
+      [] (Client.list ())
   in
   let rank_word =
     List.fold_left
@@ -35,22 +29,31 @@ let rank () =
   in
   to_all rank_word
 
-let solutions solutions points =
-  let solutions_string = String.concat " " solutions in
-  let max_points =
-    List.fold_left (fun res w -> res + points.(String.length w)) 0 solutions
+let solutions () =
+  let solutions_string =
+    let module M = Map.Make (String) in
+    let solutions_map =
+      Hashtbl.fold
+        (fun w w_unicode res -> M.add w w_unicode res)
+        Game.solutions M.empty
+    in
+    M.fold (fun _ w_unicode res -> res ^ " " ^ w_unicode) solutions_map ""
   in
-  let message = Printf.sprintf "s%d " max_points ^ solutions_string in
+  let max_points =
+    Hashtbl.fold
+      (fun w _ res -> res + Parameters.points.(String.length w))
+      Game.solutions 0
+  in
+  let message = Printf.sprintf "s%d" max_points ^ solutions_string in
   to_all message
 
-let send_game_status game_on grid game_duration solutions_duration time
-    client_id client =
+let send_game_status game_on grid time client_id client =
   (* Send game status to the new client *)
   if game_on then
     secured client_id client
       (Printf.sprintf "n%d 1 %s %.0f" client_id grid
-         (game_duration -. Unix.time () +. time))
+         (Parameters.game_duration -. Unix.time () +. time))
   else
     secured client_id client
       (Printf.sprintf "n%d 0 %s %.0f" client_id grid
-         (solutions_duration -. Unix.time () +. time))
+         (Parameters.solutions_duration -. Unix.time () +. time))

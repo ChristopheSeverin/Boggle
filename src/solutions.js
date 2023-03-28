@@ -20,7 +20,7 @@ function addSolution(w) {
   if (_li.textContent != "") {
     _li.innerHTML += " " + w.toLowerCase();
   } else {
-    _li.innerHTML = w[0] + w.substring(1).toLowerCase();
+    _li.innerHTML = w[0].toUpperCase() + w.substring(1).toLowerCase();
   }
 
   printWordStatus(w, "1");
@@ -39,7 +39,7 @@ function outputSolutions(sol) {
         _li.innerHTML += " ";
         _span.textContent = w.toLowerCase();
       } else {
-        _span.textContent = w[0] + w.substring(1).toLowerCase();
+        _span.textContent = w[0].toUpperCase() + w.substring(1).toLowerCase();
       }
       _li.appendChild(_span);
     }

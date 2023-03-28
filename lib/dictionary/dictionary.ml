@@ -1,33 +1,37 @@
 (* Dictionary : Multiway Tree *)
-type dictionary = Node of bool * (char * dictionary) list
+type dictionary = Node of string * (char * dictionary) list
 
-let rec add_aux i word (Node (b, l) as dic) =
-  if i = String.length word then Node (true, l)
-  else Node (b, insert i word l dic)
+let rec add_aux i unicode_word word (Node (b, l) as dic) =
+  if i = String.length word then Node (unicode_word, l)
+  else Node (b, insert i unicode_word word l dic)
 
-and insert i word list dic =
+and insert i unicode_word word list dic =
   let wi = word.[i] in
   match list with
-  | [] -> [ (wi, add_aux (i + 1) word (Node (false, []))) ]
+  | [] -> [ (wi, add_aux (i + 1) unicode_word word (Node ("", []))) ]
   | (c, d) :: l ->
-      if c > wi then (c, d) :: insert i word l dic
-      else if c = wi then (c, add_aux (i + 1) word d) :: l
-      else (wi, add_aux (i + 1) word (Node (false, []))) :: list
+      if c > wi then (c, d) :: insert i unicode_word word l dic
+      else if c = wi then (c, add_aux (i + 1) unicode_word word d) :: l
+      else (wi, add_aux (i + 1) unicode_word word (Node ("", []))) :: list
 
-let add = add_aux 0
+let add w_unicode d =
+  let w = Parameters.to_upper_case w_unicode in
+  if
+    Parameters.min_word_length <= String.length w
+    && String.length w <= Parameters.max_word_length
+  then add_aux 0 w_unicode w d
+  else d
 
-let rec print_aux word dic =
+let rec print dic =
   match dic with
-  | Node (true, []) -> Printf.printf "%s\n" word
-  | Node (false, []) -> failwith "Inconsistent dictionary"
-  | Node (b, l) ->
-      if b then Printf.printf "%s\n" word;
-      List.iter (fun (c, d) -> print_aux (Printf.sprintf "%s%c" word c) d) l
-
-let print = print_aux ""
+  | Node ("", []) -> failwith "Inconsistent dictionary"
+  | Node (word, []) -> Printf.printf "%s\n" word
+  | Node (word, l) ->
+      if word <> "" then Printf.printf "%s\n" word;
+      List.iter (fun (_, d) -> print d) l
 
 let load dictionary_file =
-  let dic = ref (Node (false, [])) in
+  let dic = ref (Node ("", [])) in
   let file = open_in dictionary_file in
   let () =
     try

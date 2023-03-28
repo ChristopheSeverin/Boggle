@@ -1,6 +1,5 @@
-val solutions : Dictionary.dictionary -> string -> string list
-(** [solutions d g] returns a list of words from [d] feasible in [g]. 
-    It internally finds all the possible paths in the grid that produces a given solution. *)
+val solutions : (string, string) Hashtbl.t
+(** [solutions] is a hashtable that contains current solutions in format (Parameters.to_upper_case word, word) *)
 
-val create : string -> int -> int -> unit -> string * string list
-(** [create file_name min_solutions_for_a_grid max_solutions_for_a_grid] returns a function to create grid and its solutions. *)
+val create : unit -> string
+(** [create ()] returns a function to create grid and update [solutions]. *)

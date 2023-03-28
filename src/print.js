@@ -32,15 +32,22 @@ function refreshButtonsOpacity() {
 // 1 : w accepted
 // 2 : w already found
 function printWordStatus(w, status) {
-  const _it = document.createElement("i");
-  _it.textContent = w[0] + w.substring(1).toLowerCase();
-  if (status == "2") _status.textContent = "Vous avez déjà trouvé ";
-  else _status.textContent = "";
-  _status.appendChild(_it);
-  if (status == "0") _status.innerHTML += " n'est pas accepté";
-  if (status == "1") {
-    _status.innerHTML += " vous apporte " + points[w.length].toString() + " pt";
-    if (points[w.length] > 1) _status.innerHTML += "s";
+  if (status == "2") {
+    _status.textContent = "Vous avez déjà trouvé ";
+    const _it = document.createElement("i");
+    _it.textContent = w.toLowerCase();
+    _status.appendChild(_it);
+  } else {
+    const _it = document.createElement("i");
+    _it.textContent = w[0].toUpperCase() + w.substring(1).toLowerCase();
+    _status.textContent = "";
+    _status.appendChild(_it);
+    if (status == "0") _status.innerHTML += " n'est pas accepté";
+    if (status == "1") {
+      _status.innerHTML +=
+        " vous apporte " + points[w.length].toString() + " pt";
+      if (points[w.length] > 1) _status.innerHTML += "s";
+    }
   }
   _status.innerHTML += ".";
 }
@@ -60,7 +67,7 @@ function printWord() {
   if (word.length == 0) {
     _word.textContent = "";
   } else {
-    _word.textContent = word[0] + word.substring(1).toLowerCase();
+    _word.textContent = word[0].toUpperCase() + word.substring(1).toLowerCase();
   }
 }
 

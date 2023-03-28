@@ -13,11 +13,11 @@ opam install dream
 
 ## Dictionnaire
 
-Le jeu nécessite un dictionnaire (une liste de mots) nommé par defaut _fr.txt_ et placé dans le répertoire _dictionaries_. Nous recommandons l'usage de l'[officiel du Scrabble](https://www.fisf.net/officiel-du-scrabble/presentation.html).
+Le jeu nécessite un dictionnaire (une liste de mots) nommé par defaut _fr_ et placé dans le répertoire _dictionaries_. Nous recommandons l'usage de l'[officiel du Scrabble](https://www.fisf.net/officiel-du-scrabble/presentation.html).
 
 ## Paramètres
 
-Vous pouvez changer des paramètres du jeu tels que la durée d'une partie, l'attribution des points ou le nombre maximal de joueurs autorisés dans _bin/parameters.ml_
+Vous pouvez changer des paramètres du jeu tels que la durée d'une partie, l'attribution des points ou le nombre maximal de joueurs autorisés dans _lib/parameters/parameters.ml_
 
 ## Construction
 
@@ -38,5 +38,5 @@ dune build
 Vous pouvez démarrer le serveur grâce à la commande :
 
 ```
-dune exec Boggle
+dune exec boggle
 ```
